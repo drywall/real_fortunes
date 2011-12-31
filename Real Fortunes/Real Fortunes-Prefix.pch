@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'Real Fortunes' target in the 'Real Fortunes' project
+//
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+#endif
