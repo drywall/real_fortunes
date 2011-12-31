@@ -19,9 +19,13 @@
 	<key>OpenAllWhitelistURLsInWebView</key>
 	<false/>
 	<key>ExternalHosts</key>
-	<array/>
+	<array>
+		<string>*</string>
+	</array>
 	<key>Plugins</key>
 	<dict>
+		<key>com.phonegap.twitter</key>
+		<string>TwitterPlugin</string>
 		<key>com.phonegap.accelerometer</key>
 		<string>PGAccelerometer</string>
 		<key>com.phonegap.camera</key>

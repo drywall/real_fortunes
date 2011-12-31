@@ -17,7 +17,7 @@
 		<string>icon-72.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.byrnecreative.Real_Fortunes</string>
+	<string>com.byrnecreative.RealFortunes</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

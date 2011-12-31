@@ -34,6 +34,9 @@
 		116F64BC14AF804000D5236A /* PhoneGap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 116F64BB14AF804000D5236A /* PhoneGap.plist */; };
 		116F64C014AF804000D5236A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F64BF14AF804000D5236A /* AppDelegate.m */; };
 		116F64C914AF814100D5236A /* www in Resources */ = {isa = PBXBuildFile; fileRef = 116F64C814AF814100D5236A /* www */; };
+		11EFAB9614AFB29C0047241A /* TwitterPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 11EFAB9514AFB29C0047241A /* TwitterPlugin.m */; };
+		11EFAB9B14AFB4610047241A /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11EFAB9A14AFB4610047241A /* Twitter.framework */; };
+		11EFAB9D14AFB46A0047241A /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11EFAB9C14AFB46A0047241A /* Accounts.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +72,10 @@
 		116F64BF14AF804000D5236A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Classes/AppDelegate.m; sourceTree = "<group>"; };
 		116F64C214AF804000D5236A /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
 		116F64C814AF814100D5236A /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
+		11EFAB9414AFB29C0047241A /* TwitterPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterPlugin.h; sourceTree = "<group>"; };
+		11EFAB9514AFB29C0047241A /* TwitterPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterPlugin.m; sourceTree = "<group>"; };
+		11EFAB9A14AFB4610047241A /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		11EFAB9C14AFB46A0047241A /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +83,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11EFAB9D14AFB46A0047241A /* Accounts.framework in Frameworks */,
+				11EFAB9B14AFB4610047241A /* Twitter.framework in Frameworks */,
 				116F648014AF804000D5236A /* Foundation.framework in Frameworks */,
 				116F648214AF804000D5236A /* UIKit.framework in Frameworks */,
 				116F648414AF804000D5236A /* CoreGraphics.framework in Frameworks */,
@@ -106,6 +115,8 @@
 		116F646D14AF804000D5236A = {
 			isa = PBXGroup;
 			children = (
+				11EFAB9C14AFB46A0047241A /* Accounts.framework */,
+				11EFAB9A14AFB4610047241A /* Twitter.framework */,
 				116F64C814AF814100D5236A /* www */,
 				116F649914AF804000D5236A /* Real Fortunes */,
 				116F647E14AF804000D5236A /* Frameworks */,
@@ -224,6 +235,8 @@
 		116F64C114AF804000D5236A /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				11EFAB9414AFB29C0047241A /* TwitterPlugin.h */,
+				11EFAB9514AFB29C0047241A /* TwitterPlugin.m */,
 				116F64C214AF804000D5236A /* README */,
 			);
 			name = Plugins;
@@ -322,6 +335,7 @@
 			files = (
 				116F64A014AF804000D5236A /* main.m in Sources */,
 				116F64C014AF804000D5236A /* AppDelegate.m in Sources */,
+				11EFAB9614AFB29C0047241A /* TwitterPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +431,7 @@
 				GCC_PREFIX_HEADER = "Real Fortunes/Real Fortunes-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
 				INFOPLIST_FILE = "Real Fortunes/Real Fortunes-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -444,6 +459,7 @@
 				GCC_PREFIX_HEADER = "Real Fortunes/Real Fortunes-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
 				INFOPLIST_FILE = "Real Fortunes/Real Fortunes-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -480,6 +496,7 @@
 				116F64C714AF804000D5236A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
