@@ -44,10 +44,10 @@ function onDeviceReady() {
     $("#favorite").tap(function() {
       if ($(this).hasClass('unsaved')) {
         $(this).toggleClass('saved unsaved ui-btn-active').find('.ui-btn-text').html('Remove from Favorites');
-        the_fortune.db.save_favorite( the_fortune.current_fortune_id );
+        the_fortune.db_save_favorite( current_fortune_id );
       } else {
         $(this).toggleClass('unsaved saved ui-btn-active').find('.ui-btn-text').html('Add to Favorites');      
-        the_fortune.db.remove_favorite( the_fortune.current_fortune_id );
+        the_fortune.db_remove_favorite( current_fortune_id );
       }
       return false;
     });
@@ -56,11 +56,11 @@ function onDeviceReady() {
       if ($(this).hasClass('normal')) {
         $(this).toggleClass('normal suppressed').attr('data-icon','plus').find('.ui-btn-text').html('Allow to Appear');
         $(this).find('.ui-icon').toggleClass('ui-icon-delete ui-icon-plus');
-        the_fortune.db.hide( the_fortune.current_fortune_id );
+        the_fortune.db_hide( current_fortune_id );
       } else {
         $(this).addClass('normal suppressed').attr('data-icon','delete').find('.ui-btn-text').html("Don't Show Again");      
         $(this).find('.ui-icon').toggleClass('ui-icon-delete ui-icon-plus');
-        the_fortune.db.show( the_fortune.current_fortune_id );
+        the_fortune.db_show( current_fortune_id );
       }
       return false;
     });
@@ -70,76 +70,68 @@ function onDeviceReady() {
 var file_system = 0;
 var max_fortune_id = 482; //total count of fortunes. Will be fetched dynamically later...
 var initial_count = 30;
-var the_fortune = new fortuneObj();
 var network_state = 0;
-var dbase = 0;
+var dbase = window.openDatabase('real_fortunes','1.0','RFDB', max_fortune_id * 26000);
+var fortune_ids = new Array();
+var needed = new Array();
 var num_to_fetch = 2;
-dbase = window.openDatabase('real_fortunes','1.0','RFDB', max_fortune_id * 32000); //set size for 32kb img avg
+var the_fortune = new fortuneObj();
+var current_fortune_id = 0;
+var ret = {};
 
 /**
  * Basic fortune object
  */
 function fortuneObj() {
 
-  this.current_fortune_id = 0;
   this.remote_server_url = "http://byrnecreative.com/fortune/f3/";
-  this.fortune_ids = new Array();  
-  this.needed = new Array();
 
   //constructs database and all that good stuff
   this.initialize = function() {
     //populate initial "needed" array
     for (i = initial_count; i <= max_fortune_id; i++) {
-      this.needed.push( i );
+      needed.push( i );
     }
     //load up fortunes we have in the database, updating .needed and .fortune_ids
-    this.db.init();
+    this.db_init();
   }
   
   //put fortune into DOM
   this.publish_new = function() {
-    new_fortune = this.db.load_fortune(false);
-    $("#fortune-img").fadeOut("fast",function() {
-      //show new
-      $(this).attr("src", new_fortune.src).fadeIn("fast");
-      //update tools if this is(n't) a favorite
-      if ( new_fortune.fav ) {
-        $('.unsaved').toggleClass('saved unsaved ui-btn-active').find('.ui-btn-text').html('Remove from Favorites');
-      } else {
-        $('.saved').toggleClass('unsaved saved ui-btn-active').find('.ui-btn-text').html('Add to Favorites');
-      }
-    });
-  }
-      
+    new_fortune = this.db_load_fortune(false);
+  }  
+  
   //gets a new image from the server, saves it to DB and updates fortune_ids
   this.download_images = function( num ) {
     if (network_state == Connection.NONE) return;
     
     for (i = 0; i < num; i++) {
       //figure out what id to fetch
-      new_index = Math.floor(Math.random() * this.needed.length); 
-      new_id = this.needed[ new_index ];
+      new_index = Math.floor(Math.random() * needed.length); 
+      new_id = needed[ new_index ];
+      console.log(this.remote_server_url + lpad( new_id ) + '.jpg');
       
       //get it
       $.getImageData({
         url: this.remote_server_url + lpad( new_id ) + '.jpg',
         success: function(image) {
+          //console.log(image);
           src = $(image).attr('src');
           //save it to DB
-          this.db.create_fortune( new_id, src );
+          this.db_create_fortune( new_id, src );
           //update arrays
-          this.fortune_ids.push( new_id );
-          this.needed.remove( new_id );
+          fortune_ids.push( new_id );
+          needed.remove( new_id );
         },
-        error: function(xhr,text_status) {}
+        error: function(xhr,text_status) {
+          console.log('shit');
+        }
       });
     }
   }
-  
-  this.db = {};
-  
+    
   //initialize the database and fortune_ids array
-  this.db.init = function() {
+  this.db_init = function() {
     dbase.transaction(function(tx) {
       
       //try to create the table if needed
@@ -150,66 +142,67 @@ function fortuneObj() {
         if (!results.rows.length) {
           for (i = 1; i <= initial_count; i++) {
             tx.executeSql('INSERT INTO fortunes VALUES ('+i+', "img/' + lpad(i) + '.jpg", 0, 0)');
-            the_fortune.fortune_ids.push(i);
+            fortune_ids.push(i);
           }
         } else {
-          for (i = 1; i <= results.rows.length; i++) {
-            the_fortune.fortune_ids.push( results.rows.item(i).id );
-            the_fortune.needed.remove( results.rows.item(i).id );
+          for (i = 1; i < results.rows.length; i++) {
+            fortune_ids.push( results.rows.item(i).id );
+            needed.remove( results.rows.item(i).id );
           }
         }
-      }, the_fortune.db.error); //end call for querying list
+      }, new_db_error); //end call for querying list
       
-    }, the_fortune.db.error, the_fortune.db.success); //end call for transaction
+    }, new_db_error, this.db_success); //end call for transaction
   }
   
   //load a fortune
-  this.db.load_fortune = function( id ) {
+  this.db_load_fortune = function( id ) {
     //if id, load a particular id. Otherwise grab a random
-    ret = new Object();
     dbase.transaction(function(tx) {
       if ( id ) {
-        tx.executeSql('SELECT * FROM fortunes WHERE id = '+id+' LIMIT 1', [], function(tx2,res) {
-          //don't test to see if it worked, just assume it did for now
-          ret = res.rows.item(0);
-        }, the_fortune.db.error);
+        tx.executeSql('SELECT * FROM fortunes WHERE id = '+id+' LIMIT 1', [], 
+          function(tx2,res) {
+            //don't test to see if it worked, just assume it did for now
+            switch_fortune(res.rows.item(0));
+          }, 
+          new_db_error);
       } else {
-        tx.executeSql('SELECT * FROM fortunes WHERE hidden != 1 AND id != '+the_fortune.current_fortune_id+' ORDER BY RANDOM() LIMIT 1', [], function(tx2,res) {
-          //don't test to see if it worked, just assume it did for now
-          ret = res.rows.item(0);
-        }, the_fortune.db.error);
+        rand = Math.floor(Math.random() * fortune_ids.length);  //because ORDER BY random() is busted in webkit
+        tx.executeSql('SELECT * FROM fortunes WHERE hidden != 1 AND id != '+current_fortune_id+' LIMIT 1 OFFSET '+rand, [], 
+          function(tx2,res) {
+            //don't test to see if it worked, just assume it did for now
+            switch_fortune(res.rows.item(0));
+          }, 
+          new_db_error);
       }
     });
-    return ret; //send back the object 
   }
   
-  this.db.save_favorite = function( id ) {
+  this.db_save_favorite = function( id ) {
     dbase.transaction(function(tx) {
       tx.executeSql('UPDATE fortunes SET fav = 1 WHERE id = '+id+' LIMIT 1');
-    }, the_fortune.db.error);
+    }, new_db_error);
   }
   
-  this.db.remove_favorite = function( id ) {
+  this.db_remove_favorite = function( id ) {
     dbase.transaction(function(tx) {
       tx.executeSql('UPDATE fortunes SET fav = 0 WHERE id = '+id+' LIMIT 1');
-    }, the_fortune.db.error);  
+    }, new_db_error);  
   }
 
-  this.db.hide = function( id ) {
+  this.db_hide = function( id ) {
     dbase.transaction(function(tx) {
       tx.executeSql('UPDATE fortunes SET hidden = 1 WHERE id = '+id+' LIMIT 1');
-    }, the_fortune.db.error);
+    }, new_db_error);
   }
   
-  this.db.show = function( id ) {
+  this.db_show = function( id ) {
     dbase.transaction(function(tx) {
       tx.executeSql('UPDATE fortunes SET hidden = 0 WHERE id = '+id+' LIMIT 1');
-    }, the_fortune.db.error);  
+    }, new_db_error);  
   }
-
-
   
-  this.db.clear_entries = function( clear_type ) {
+  this.db_clear_entries = function( clear_type ) {
     //can clear either entire local downloads ('downloads')
     //or suppression list ('suppressions')
     dbase.transcation(function(tx){
@@ -218,34 +211,26 @@ function fortuneObj() {
       } else {
         tx.executeSql('UPDATE fortunes SET hidden = 0 WHERE hidden = 1');
       }
-    }, the_fortune.db.error);
+    }, new_db_error);
   }
   
-  this.db.create_fortune = function( id, src ) {
+  this.db_create_fortune = function( id, src ) {
     dbase.transaction(function(tx){
       tx.executeSql('INSERT INTO fortunes VALUES ('+id+', "'+src+'", 0, 0)');
-    }, the_fortune.db.error);
+    }, new_db_error);
   }
   
-  this.db.load_favorites = function() {
+  this.db_load_favorites = function() {
     ret = new Array();
     dbase.transaction(function(tx) {
       tx.executeSql('SELECT * FROM fortunes WHERE fav = 1', [], function(tx2, res) {
         for (var i=0; i < res.rows.length; i++) {
           ret[i] = res.rows.item(i);
         }
-      }, the_fortune.db.error);
-    }, the_fortune.db.error);
+      }, new_db_error);
+    }, new_db_error);
     
     return ret;//array of objects
-  }
-  
-  this.db.error = function() {
-    //well shit
-  }
-
-  this.db.success = function() {
-    //oh good
   }
   
   //constructor
@@ -259,7 +244,7 @@ function fortuneObj() {
  */
 
 // String padding for filenames
-lpad = function( value ) {
+function lpad( value ) {
   string = value + "";
   while (string.length < 4)
     string = "0" + string;
@@ -267,7 +252,7 @@ lpad = function( value ) {
 }
 
 // Allow/disallow downloads if status changes
-updateNetworkStatus = function() {
+function updateNetworkStatus() {
   network_status = navigator.network.connection.type;
   if (network_status == Connection.NONE) {
     navigation.notification.alert(
@@ -289,3 +274,25 @@ Array.prototype.remove= function(){
   }
   return this;
 }
+
+function new_db_error(tx,err) {
+  console.log('oops');
+  console.log(err.code);
+  console.log(err.message);
+}
+
+function switch_fortune( new_fortune ) {
+  current_fortune_id = new_fortune.id;
+  $("#fortune-img").fadeOut("fast",function() {
+    //show new
+    $(this).attr("src", new_fortune.src).fadeIn("fast");
+    //update tools if this is(n't) a favorite
+    if ( new_fortune.fav ) {
+      $('.unsaved').toggleClass('saved unsaved ui-btn-active').find('.ui-btn-text').html('Remove from Favorites');
+    } else {
+      $('.saved').toggleClass('unsaved saved ui-btn-active').find('.ui-btn-text').html('Add to Favorites');
+    }
+  });
+}
+
+onDeviceReady();
