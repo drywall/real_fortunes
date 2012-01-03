@@ -43,10 +43,10 @@ function onDeviceReady() {
   $("#toolspage").live('pageinit', function(e) {
     $("#favorite").tap(function() {
       if ($(this).hasClass('unsaved')) {
-        $(this).toggleClass('saved unsaved ui-btn-active').find('.ui-btn-text').html('Remove from Favorites');
+        $(this).toggleClass('saved unsaved').find('.ui-btn-text').html('Remove from Favorites');
         the_fortune.db_save_favorite( current_fortune_id );
       } else {
-        $(this).toggleClass('unsaved saved ui-btn-active').find('.ui-btn-text').html('Add to Favorites');      
+        $(this).toggleClass('unsaved saved').find('.ui-btn-text').html('Add to Favorites');      
         the_fortune.db_remove_favorite( current_fortune_id );
       }
       return false;
@@ -124,7 +124,7 @@ function fortuneObj() {
           needed.remove( new_id );
         },
         error: function(xhr,text_status) {
-          console.log('shit');
+          console.log('ajax failure');
         }
       });
     }
@@ -180,25 +180,25 @@ function fortuneObj() {
   
   this.db_save_favorite = function( id ) {
     dbase.transaction(function(tx) {
-      tx.executeSql('UPDATE fortunes SET fav = 1 WHERE id = '+id+' LIMIT 1');
+      tx.executeSql('UPDATE fortunes SET fav = 1 WHERE id = '+id);
     }, new_db_error);
   }
   
   this.db_remove_favorite = function( id ) {
     dbase.transaction(function(tx) {
-      tx.executeSql('UPDATE fortunes SET fav = 0 WHERE id = '+id+' LIMIT 1');
+      tx.executeSql('UPDATE fortunes SET fav = 0 WHERE id = '+id);
     }, new_db_error);  
   }
 
   this.db_hide = function( id ) {
     dbase.transaction(function(tx) {
-      tx.executeSql('UPDATE fortunes SET hidden = 1 WHERE id = '+id+' LIMIT 1');
+      tx.executeSql('UPDATE fortunes SET hidden = 1 WHERE id = '+id);
     }, new_db_error);
   }
   
   this.db_show = function( id ) {
     dbase.transaction(function(tx) {
-      tx.executeSql('UPDATE fortunes SET hidden = 0 WHERE id = '+id+' LIMIT 1');
+      tx.executeSql('UPDATE fortunes SET hidden = 0 WHERE id = '+id);
     }, new_db_error);  
   }
   
@@ -276,21 +276,22 @@ Array.prototype.remove= function(){
 }
 
 function new_db_error(tx,err) {
-  console.log('oops');
-  console.log(err.code);
-  console.log(err.message);
+  console.log(tx);
 }
 
 function switch_fortune( new_fortune ) {
   current_fortune_id = new_fortune.id;
+  img = new Image();
+  img.src = new_fortune.src; //preload
+  
   $("#fortune-img").fadeOut("fast",function() {
     //show new
     $(this).attr("src", new_fortune.src).fadeIn("fast");
     //update tools if this is(n't) a favorite
     if ( new_fortune.fav ) {
-      $('.unsaved').toggleClass('saved unsaved ui-btn-active').find('.ui-btn-text').html('Remove from Favorites');
+      $('.unsaved').toggleClass('saved unsaved').find('.ui-btn-text').html('Remove from Favorites');
     } else {
-      $('.saved').toggleClass('unsaved saved ui-btn-active').find('.ui-btn-text').html('Add to Favorites');
+      $('.saved').toggleClass('unsaved saved').find('.ui-btn-text').html('Add to Favorites');
     }
   });
 }

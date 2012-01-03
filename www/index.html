@@ -23,9 +23,7 @@
 	<div data-role="content">
     <div data-role="controlgroup" data-type="horizontal" id="controls">
   		<a href="#infopage" data-role="button" data-icon="info" data-iconpos="notext" id="home" data-transition="flip">Home</a>
-  		<a href="#toolspage" data-role="button" data-icon="gear" data-iconpos="notext" id="tools" data-rel="dialog" data-transition="fade">Tools</a>  		
-  		<button data-icon="refresh" data-iconpos="notext" id="refresh">Load New Fortune</button>
-  
+  		<a href="#toolspage" data-role="button" data-icon="gear" data-iconpos="notext" id="tools" data-rel="dialog" data-transition="fade">Tools</a>  		  
 		</div>
 		<div class="container"><img id="fortune-img"></div>
 	</div><!-- /content -->
@@ -34,11 +32,26 @@
 
 
 <div data-role="page" data-theme="f" id="infopage">
-  <div data-role="header" data-add-back-btn="true">
-		<h1>About Real Fortune</h1>
+  <div data-role="header">
+    <a href="#fortunepage" data-inline="true" data-role="button" data-rel="back">Back</a>
+		<h1>Real Fortune</h1>
 	</div><!-- /header -->
 	<div data-role="content">	
-		Hello world!
+		<p><strong>To view a new fortune</strong>
+		  Simply tap or swipe on the current fortune, or shake your device.
+		</p>
+		<p><strong>To save, share, etc</strong>
+		  Tap the tool icon or tap+hold on the fortune.
+		</p>
+		<p><strong>Credits</strong>
+		  Built by Ben Byrne using PhoneGap and jQueryMobile. Contact <a href="mailto:fortune@byrnecreative.com">fortune@byrnecreative.com</a> with feedback.
+		</p>
+		
+		<div data-role="controlgroup">
+		  <a href="#favoritespage" data-role="button" id="view-faves" data-rel="dialog">View Favorites</a>
+		  <a href="#" data-role="button" id="clear-faves">Clear Hidden</a>
+		  <a href="#" data-role="button" id="clear-downloads">Clear Downloaded Fortunes</a>
+		</div>
 	</div><!-- /content -->
 
 </div><!-- /page -->
@@ -57,6 +70,20 @@
     <a href="#fortunepage" data-role="button" id="close" data-rel="back">Done</a>
   </div>
 </div><!-- /page -->
+
+
+<div data-role="page" id="favoritespage" data-theme="c">
+  <div data-role="header">
+		<h1>Favorites</h1>
+	</div><!-- /header -->
+  <div data-role="content">
+    <div data-role="controlgroup">
+      <a href="#" data-role="button" id="clear-faves">Clear All</a>
+    </div>
+  </div>
+</div><!-- /page -->
+
+
 
 </body>
 </html>

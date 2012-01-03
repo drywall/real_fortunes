@@ -22,3 +22,8 @@ body {
 #nonetwork {
   display: none;
 }
+
+strong {
+  display: block;
+  margin-bottom: 0.2em;
+}
