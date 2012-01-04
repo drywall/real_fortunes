@@ -38,7 +38,7 @@
 	</div><!-- /header -->
 	<div data-role="content">	
 		<p><strong>To view a new fortune</strong>
-		  Simply tap or swipe on the current fortune, or shake your device.
+		  Tap or swipe on the current fortune, or simply shake your device.
 		</p>
 		<p><strong>To save, share, etc</strong>
 		  Tap the tool icon or tap+hold on the fortune.
@@ -48,7 +48,7 @@
 		</p>
 		
 		<div data-role="controlgroup">
-		  <a href="#favoritespage" data-role="button" id="view-faves" data-rel="dialog">View Favorites</a>
+		  <a href="#favoritespage" data-role="button" id="view-faves">View Favorites</a>
 		  <a href="#" data-role="button" id="clear-faves">Clear Hidden</a>
 		  <a href="#" data-role="button" id="clear-downloads">Clear Downloaded Fortunes</a>
 		</div>
@@ -72,13 +72,19 @@
 </div><!-- /page -->
 
 
-<div data-role="page" id="favoritespage" data-theme="c">
-  <div data-role="header">
-		<h1>Favorites</h1>
+<div data-role="page" id="favoritespage" data-theme="d">
+  <div data-role="header" data-add-back-btn="true" data-back-btn-text="back">
+		<h1>Saved Favorites</h1>
 	</div><!-- /header -->
   <div data-role="content">
+    <ul data-role="listview" id="favorites-list">
+      <li><a href="#" id="fave-X"><img src="http://byrnecreative.com/fortune/f3/0211.jpg"></a></li>
+      <li><a href="#" id="fave-X"><img src="http://byrnecreative.com/fortune/f3/0211.jpg"></a></li>
+      <li><a href="#" id="fave-X"><img src="http://byrnecreative.com/fortune/f3/0211.jpg"></a></li>    
+    </ul>
+    <br>
     <div data-role="controlgroup">
-      <a href="#" data-role="button" id="clear-faves">Clear All</a>
+      <a href="#" data-role="button" id="clear-faves">Clear Favorites</a>
     </div>
   </div>
 </div><!-- /page -->
