@@ -115,8 +115,6 @@
 		116F646D14AF804000D5236A = {
 			isa = PBXGroup;
 			children = (
-				11EFAB9C14AFB46A0047241A /* Accounts.framework */,
-				11EFAB9A14AFB4610047241A /* Twitter.framework */,
 				116F64C814AF814100D5236A /* www */,
 				116F649914AF804000D5236A /* Real Fortunes */,
 				116F647E14AF804000D5236A /* Frameworks */,
@@ -135,6 +133,8 @@
 		116F647E14AF804000D5236A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				11EFAB9C14AFB46A0047241A /* Accounts.framework */,
+				11EFAB9A14AFB4610047241A /* Twitter.framework */,
 				116F647F14AF804000D5236A /* Foundation.framework */,
 				116F648114AF804000D5236A /* UIKit.framework */,
 				116F648314AF804000D5236A /* CoreGraphics.framework */,
