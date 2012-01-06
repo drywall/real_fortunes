@@ -46,7 +46,7 @@ function onDeviceReady() {
   	$(".container").height( $(".container").width() * .33375 );
   	myHeight = $(window).height();
   	newTop = (myHeight - $('.container').height() ) / 2; 
-  	$(".container").css('margin-top', newTop - 10);
+  	$(".container").css('margin-top', newTop - 45);
   	$(this).css('height',myHeight);
   });
   
@@ -85,12 +85,11 @@ function onDeviceReady() {
     //tweeter!
   	$("#tweet").tap(function() {
   		window.plugins.twitter.sendTweet(
-  			'twitter_success',
-  			'twitter_failure',
-  			'Check out this fortune from my real_fortunes app...'
-  	//		'http://www.google.com',
-  		//	'http://byrnecreative.com/fortune/f3/0001.jpg'
-  			//the_fortune.remote_server_url + lpad(current_fortune_id) + ".jpg"
+  			function(s) { console.log('w00t'); },
+  			function(f) { console.log('oops'); },
+  			'Check out this fortune from my iOS app, @RealFortunes',
+  			'',
+  			the_fortune.remote_server_url + lpad(current_fortune_id) + ".jpg"
   		);    	
   	});
   });
@@ -150,7 +149,9 @@ function onDeviceReady() {
   				}
   			}, 
   			"Warning", 
-  			"Ok,Cancel");
+  			"Ok,Cancel"
+  		);
+  		return false;
   	});
   });
   
@@ -409,8 +410,10 @@ function switch_fortune( new_fortune ) {
     $(this).attr("src", new_fortune.src).delay(40).fadeIn("fast");
     //update tools if this is(n't) a favorite
     if ( new_fortune.fav ) {
+    	$('.favorited').fadeIn('fast');
       $('.unsaved').toggleClass('saved unsaved').find('.ui-btn-text').html('Remove from Favorites');
     } else {
+    	$('.favorited').fadeOut('fast');
       $('.saved').toggleClass('unsaved saved').find('.ui-btn-text').html('Add to Favorites');
     }
     //update suppression, just in case

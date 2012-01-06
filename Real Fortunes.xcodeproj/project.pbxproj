@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		112529E914B793B700CB9A6D /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 112529E814B793B700CB9A6D /* Default-Portrait~ipad.png */; };
 		116F648014AF804000D5236A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116F647F14AF804000D5236A /* Foundation.framework */; };
 		116F648214AF804000D5236A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116F648114AF804000D5236A /* UIKit.framework */; };
 		116F648414AF804000D5236A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116F648314AF804000D5236A /* CoreGraphics.framework */; };
@@ -35,11 +36,12 @@
 		116F64C014AF804000D5236A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F64BF14AF804000D5236A /* AppDelegate.m */; };
 		116F64C914AF814100D5236A /* www in Resources */ = {isa = PBXBuildFile; fileRef = 116F64C814AF814100D5236A /* www */; };
 		11EFAB9614AFB29C0047241A /* TwitterPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 11EFAB9514AFB29C0047241A /* TwitterPlugin.m */; };
-		11EFAB9B14AFB4610047241A /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11EFAB9A14AFB4610047241A /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		11EFAB9D14AFB46A0047241A /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11EFAB9C14AFB46A0047241A /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		11EFAB9B14AFB4610047241A /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11EFAB9A14AFB4610047241A /* Twitter.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		11EFAB9D14AFB46A0047241A /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11EFAB9C14AFB46A0047241A /* Accounts.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		112529E814B793B700CB9A6D /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		116F647B14AF804000D5236A /* Real Fortunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Real Fortunes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		116F647F14AF804000D5236A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		116F648114AF804000D5236A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -115,6 +117,7 @@
 		116F646D14AF804000D5236A = {
 			isa = PBXGroup;
 			children = (
+				112529E814B793B700CB9A6D /* Default-Portrait~ipad.png */,
 				116F64C814AF814100D5236A /* www */,
 				116F649914AF804000D5236A /* Real Fortunes */,
 				116F647E14AF804000D5236A /* Frameworks */,
@@ -307,6 +310,7 @@
 				116F64BA14AF804000D5236A /* Capture.bundle in Resources */,
 				116F64BC14AF804000D5236A /* PhoneGap.plist in Resources */,
 				116F64C914AF814100D5236A /* www in Resources */,
+				112529E914B793B700CB9A6D /* Default-Portrait~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

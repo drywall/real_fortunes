@@ -20,7 +20,8 @@ body, html {
 }
 
 #fortunepage {
-	box-shadow: inset 0 0 20px #f96;
+	box-shadow: inset 0 0 20px #ffa680;
+	font-size: 90%;
 }
 
 .ui-content {
@@ -28,7 +29,8 @@ body, html {
 }
 
 #controls {
-  float: right;
+	margin: 0 auto;
+	text-align: center;
 }
 
 #nonetwork {
@@ -44,11 +46,19 @@ body, html {
 }
 
 p {
-	margin: 0 0 0.8em 0;
+	margin: 0.4 0 1em 0;
 }
 
 .ui-li-thumb { 
 	max-height: 80px;
 	max-width: 310px;
 	padding-left: 10px;
+}
+
+.favorited {
+	color: #ffb899;
+	text-align: center;
+	display: none;
+	font-size: 150%;
+	margin-top: 10px;
 }

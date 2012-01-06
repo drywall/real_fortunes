@@ -29,12 +29,13 @@
 <div data-role="page" data-theme="d" id="fortunepage">
 
 	<div data-role="content" class="mycontent">
-		<a href="#favoritespage" data-role="button" data-icon="back" data-iconpos="left" id="fortune-back" data-direction="reverse">Back to Favorites</a>
+		<!-- a href="#favoritespage" data-role="button" data-icon="back" data-iconpos="left" id="fortune-back" data-direction="reverse">Back to Favorites</a -->
     <div data-role="controlgroup" data-type="horizontal" id="controls">
-  		<a href="#infopage" data-role="button" data-icon="info" data-iconpos="notext" id="home" data-transition="flip">Home</a>
-  		<a href="#toolspage" data-role="button" data-icon="gear" data-iconpos="notext" id="tools" data-transition="fade" data-rel="dialog">Tools</a>  	
+  		<a href="#infopage" data-role="button" id="home" data-transition="flip">Info</a>
+  		<a href="#toolspage" data-role="button" id="tools" data-transition="fade" data-rel="dialog">Tools</a>  	
 		</div>
 		<div class="container"><img id="fortune-img" src="img/0001.jpg"></div>
+		<div class="favorited">★</div>
 	</div><!-- /content -->
 
 </div><!-- /page -->
@@ -46,16 +47,16 @@
 		<h1>Real Fortune</h1>
 	</div><!-- /header -->
 	<div data-role="content">	
-		<p><strong>Tap or shake</strong> to load a new fortune.</p>
-		<p><strong>Tap+hold</strong> or tap the tool icon to share, favorite, or suppress.</p>
-		<p style="font-size:85%;"><em>Built by Ben Byrne using PhoneGap and jQueryMobile. Contact <a href="mailto:fortune@byrnecreative.com">fortune@byrnecreative.com</a> with feedback.</em>
-		</p>
-		
+		<p><strong>Tap fortune or shake device</strong> to load a new fortune.</p>
+		<p><strong>Tap+hold</strong> or tap the tools button to share, favorite, or suppress.</p>
 		<div data-role="controlgroup">
 		  <a href="#favoritespage" data-role="button" id="view-faves">View Favorites</a>
 		  <a href="#" data-role="button" id="clear-hidden">Clear Hidden</a>
 		  <a href="#" data-role="button" id="clear-downloads">Clear Downloaded Fortunes</a>
 		</div>
+		<p style="font-size:85%;"><em>Built by Ben Byrne using PhoneGap and jQueryMobile. Contact <a href="mailto:fortune@byrnecreative.com">fortune@byrnecreative.com</a> with feedback.</em>
+		</p>
+		
 	</div><!-- /content -->
 
 </div><!-- /page -->
@@ -68,7 +69,7 @@
   <div data-role="content">
     <div data-role="controlgroup">
       <a href="#" data-role="button" id="favorite" data-icon="star" class="unsaved">Add to Favorites</a>
-      <a href="#" data-role="button" id="tweet" data-icon="check">Share on Twitter</a>
+      <a href="#" data-role="button" id="tweet" data-icon="check">Tweet This Fortune</a>
       <a href="#" data-role="button" id="suppress" data-icon="delete" class="normal">Don't Show This One Again</a>
     </div>
     <!-- a href="#fortunepage" data-role="button" id="close" data-rel="back">Done</a -->
