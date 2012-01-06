@@ -85,8 +85,8 @@ function onDeviceReady() {
     //tweeter!
   	$("#tweet").tap(function() {
   		window.plugins.twitter.sendTweet(
-  			function(s) { console.log('w00t'); },
-  			function(f) { console.log('oops'); },
+  			function(s) { console.log('RealFortune: Tweet sent'); },
+  			function(f) { console.log('RealFortune: Tweet problem'); },
   			'Check out this fortune from my iOS app, @RealFortunes',
   			'',
   			the_fortune.remote_server_url + lpad(current_fortune_id) + ".jpg"
@@ -120,7 +120,6 @@ function onDeviceReady() {
   			"Warning", 
   			"Ok,Cancel");
   	});
-
   });
   
   //behaviors for favoritespage
@@ -181,13 +180,13 @@ function fortuneObj() {
     // get the max id
     $.get( this.remote_server_url + "max.json", function(data) {
     	max_fortune_id = data.max;
-	    //populate initial "needed" array
+	    //re-populate initial "needed" array, overwriting db_init call
+	    needed = [];
 	    for (i = initial_count; i <= max_fortune_id; i++) {
-	      needed.push(i);
+	      if (!$.inArray(i, fortune_ids)) {
+	      	needed.push(i);
+	      }
 	    }
-	    //load up fortunes we have in the database, updating .needed and .fortune_ids
-	    //can't refer to "this" here…. hmmm...
-	    //this.db_init();
     }, 'json');
     //gets reset during db_init as needed
     for (i = initial_count+1; i <= max_fortune_id; i++) {
@@ -224,7 +223,7 @@ function fortuneObj() {
           needed.remove( new_id );
         },
         error: function(xhr,text_status) {
-          console.log('ajax failure!');
+          console.log('RealFortune: ajax failure!');
         }
       });
     }
@@ -252,7 +251,7 @@ function fortuneObj() {
         }
       }, new_db_error); //end call for querying list
       
-    }, new_db_error, this.db_success); //end call for transaction
+    }, new_db_error, db_success); //end call for transaction
   }
   
   //load a fortune
@@ -353,7 +352,6 @@ function db_create_fortune( id, src ) {
   dbase.transaction(function(tx){
     tx.executeSql('INSERT INTO fortunes(id,src,fav,hidden) VALUES ('+ id +', "'+src+'", 0, 0)');
   }, new_db_error);
-  console.log('run');
 }
 
 /**
@@ -378,8 +376,8 @@ function updateNetworkStatus() {
       null_func,
       'No Network Found'
     );
-  } else {	//setup? or available?
-  	if (window.plugins.twitter.isTwitterAvailable() && window.plugins.twitter.isTwitterSetup()) $("#tweet").show();
+  } else {
+  	if (window.plugins.twitter.isTwitterAvailable()) $("#tweet").show();
   }
 }
 
@@ -396,8 +394,7 @@ Array.prototype.remove= function(){
 }
 
 function new_db_error(tx,err) {
-  console.log('crap, a DB error');
-  console.log(tx);
+  console.log('RealFortune: DB error');
 }
 
 function switch_fortune( new_fortune ) {
@@ -431,16 +428,6 @@ function reload_favorites() {
 	$("#favorites-list").listview('refresh'); 
 }
 
-//Twitter stuff
-function twitter_success() {
-	navigator.notification.alert('Tweet sent.');
-}
-
-//Twitter stuff
-function twitter_failure() {
-	navigator.notification.alert('Sorry, tweet could not be sent.');
-}
-
 //shake it like a polaroid picture
 function on_shake_event() {
 	if ($.mobile.activePage.attr('id') == "fortunepage" && $("#fortune-back:visible").length == 0) {
@@ -448,6 +435,4 @@ function on_shake_event() {
 	}
 }
 
-function null_func() {
-	console.log('null');
-}
+function null_func() {}
