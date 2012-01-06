@@ -61,9 +61,11 @@ function onDeviceReady() {
     $("#favorite").tap(function() {
       if ($(this).hasClass('unsaved')) {
         $(this).toggleClass('saved unsaved').find('.ui-btn-text').html('Remove from Favorites');
+        $(".favorited").show();
         the_fortune.db_save_favorite( current_fortune_id );
       } else {
-        $(this).toggleClass('unsaved saved').find('.ui-btn-text').html('Add to Favorites');      
+        $(this).toggleClass('unsaved saved').find('.ui-btn-text').html('Add to Favorites');
+        $(".favorited").hide();
         the_fortune.db_remove_favorite( current_fortune_id );
       }
       return false;
@@ -436,3 +438,7 @@ function on_shake_event() {
 }
 
 function null_func() {}
+
+function db_success() {
+	console.log('DB okay');
+}
