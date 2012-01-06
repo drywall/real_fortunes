@@ -1,8 +1,13 @@
 .container {
-  margin: 0 auto;
-  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 95%;
   position: relative;
-  top:50%;
+  max-width: 800px;
+  height: 50px;
+  clear: both;
 }
 
 .container img {
@@ -10,9 +15,16 @@
   height: 100%;
 }
 
-body {
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
+body, html {
+  background: #333;
+}
+
+#fortunepage {
+	box-shadow: inset 0 0 20px #f96;
+}
+
+.ui-content {
+	padding: 10px;
 }
 
 #controls {
@@ -23,7 +35,20 @@ body {
   display: none;
 }
 
-strong {
-  display: block;
-  margin-bottom: 0.2em;
+#fortune-back {
+	display: none;
+	position: absolute;
+	top:0;
+	left:0;
+	float: left;
+}
+
+p {
+	margin: 0 0 0.8em 0;
+}
+
+.ui-li-thumb { 
+	max-height: 80px;
+	max-width: 310px;
+	padding-left: 10px;
 }

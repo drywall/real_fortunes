@@ -10,6 +10,8 @@
 	<link rel="stylesheet" href="css/fortune.css" />
 
 	<script type="text/javascript" src="js/phonegap-1.3.0.js"></script>
+	<script type="text/javascript" src="js/TwitterPlugin.js"></script>
+	<script type="text/javascript" src="js/shake.js"></script>
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/jquery.getimagedata.js"></script>
 	<script type="text/javascript" src="js/fortune.js"></script>
@@ -18,46 +20,48 @@
 </head> 
 <body onload="onBodyLoad()"> 
 
+<!-- HACK -->
+<div data-role='page' data-theme="d" id="intropage">
+	<div data-role="content"></div>
+</div>
+
+<!-- !FORTUNE -->
 <div data-role="page" data-theme="d" id="fortunepage">
 
-	<div data-role="content">
+	<div data-role="content" class="mycontent">
+		<a href="#favoritespage" data-role="button" data-icon="back" data-iconpos="left" id="fortune-back" data-direction="reverse">Back to Favorites</a>
     <div data-role="controlgroup" data-type="horizontal" id="controls">
   		<a href="#infopage" data-role="button" data-icon="info" data-iconpos="notext" id="home" data-transition="flip">Home</a>
-  		<a href="#toolspage" data-role="button" data-icon="gear" data-iconpos="notext" id="tools" data-rel="dialog" data-transition="fade">Tools</a>  		  
+  		<a href="#toolspage" data-role="button" data-icon="gear" data-iconpos="notext" id="tools" data-transition="fade" data-rel="dialog">Tools</a>  	
 		</div>
-		<div class="container"><img id="fortune-img"></div>
+		<div class="container"><img id="fortune-img" src="img/0001.jpg"></div>
 	</div><!-- /content -->
 
 </div><!-- /page -->
 
-
+<!-- !INFO -->
 <div data-role="page" data-theme="f" id="infopage">
   <div data-role="header">
-    <a href="#fortunepage" data-inline="true" data-role="button" data-rel="back">Back</a>
+    <a href="#fortunepage" data-inline="true" data-role="button" data-direction="reverse" data-transition="flip">Back</a>
 		<h1>Real Fortune</h1>
 	</div><!-- /header -->
 	<div data-role="content">	
-		<p><strong>To view a new fortune</strong>
-		  Tap or swipe on the current fortune, or simply shake your device.
-		</p>
-		<p><strong>To save, share, etc</strong>
-		  Tap the tool icon or tap+hold on the fortune.
-		</p>
-		<p><strong>Credits</strong>
-		  Built by Ben Byrne using PhoneGap and jQueryMobile. Contact <a href="mailto:fortune@byrnecreative.com">fortune@byrnecreative.com</a> with feedback.
+		<p><strong>Tap or shake</strong> to load a new fortune.</p>
+		<p><strong>Tap+hold</strong> or tap the tool icon to share, favorite, or suppress.</p>
+		<p style="font-size:85%;"><em>Built by Ben Byrne using PhoneGap and jQueryMobile. Contact <a href="mailto:fortune@byrnecreative.com">fortune@byrnecreative.com</a> with feedback.</em>
 		</p>
 		
 		<div data-role="controlgroup">
 		  <a href="#favoritespage" data-role="button" id="view-faves">View Favorites</a>
-		  <a href="#" data-role="button" id="clear-faves">Clear Hidden</a>
+		  <a href="#" data-role="button" id="clear-hidden">Clear Hidden</a>
 		  <a href="#" data-role="button" id="clear-downloads">Clear Downloaded Fortunes</a>
 		</div>
 	</div><!-- /content -->
 
 </div><!-- /page -->
 
-
-<div data-role="page" id="toolspage" data-theme="c" data-overlay-theme="c">
+<!-- !TOOLS -->
+<div data-role="dialog" id="toolspage" data-theme="c" data-overlay-theme="c">
   <div data-role="header">
 		<h1>Tools</h1>
 	</div><!-- /header -->
@@ -65,22 +69,21 @@
     <div data-role="controlgroup">
       <a href="#" data-role="button" id="favorite" data-icon="star" class="unsaved">Add to Favorites</a>
       <a href="#" data-role="button" id="tweet" data-icon="check">Share on Twitter</a>
-      <a href="#" data-role="button" id="suppress" data-icon="delete" class="normal">Don't Show Again</a>
+      <a href="#" data-role="button" id="suppress" data-icon="delete" class="normal">Don't Show This One Again</a>
     </div>
-    <a href="#fortunepage" data-role="button" id="close" data-rel="back">Done</a>
+    <!-- a href="#fortunepage" data-role="button" id="close" data-rel="back">Done</a -->
   </div>
 </div><!-- /page -->
 
-
+<!-- !FAVORITES -->
 <div data-role="page" id="favoritespage" data-theme="d">
-  <div data-role="header" data-add-back-btn="true" data-back-btn-text="back">
+  <div data-role="header">
+    <a href="#infopage" data-inline="true" data-role="button" data-direction="reverse">Back</a>
 		<h1>Saved Favorites</h1>
 	</div><!-- /header -->
   <div data-role="content">
-    <ul data-role="listview" id="favorites-list">
-      <li><a href="#" id="fave-X"><img src="http://byrnecreative.com/fortune/f3/0211.jpg"></a></li>
-      <li><a href="#" id="fave-X"><img src="http://byrnecreative.com/fortune/f3/0211.jpg"></a></li>
-      <li><a href="#" id="fave-X"><img src="http://byrnecreative.com/fortune/f3/0211.jpg"></a></li>    
+    <ul data-role="listview" id="favorites-list"> 
+    	<!-- will be populated by javascript -->
     </ul>
     <br>
     <div data-role="controlgroup">
@@ -88,8 +91,6 @@
     </div>
   </div>
 </div><!-- /page -->
-
-
 
 </body>
 </html>
