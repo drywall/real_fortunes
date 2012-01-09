@@ -175,7 +175,7 @@ var current_fortune_id = 0;
  */
 function fortuneObj() {
 
-  this.remote_server_url = "http://byrnecreative.com/fortune/f3/";
+  this.remote_server_url = "https://s3.amazonaws.com/real-fortune/";
 
   //constructs database and all that good stuff
   this.initialize = function() {
@@ -225,7 +225,8 @@ function fortuneObj() {
           needed.remove( new_id );
         },
         error: function(xhr,text_status) {
-          console.log('RealFortune: ajax failure!');
+        	//need to take a closer look at this
+          console.log('RealFortune: ajax failure: '+text_status);
         }
       });
     }
@@ -342,7 +343,7 @@ function fortuneObj() {
         }
         $("#favorites-list").listview('refresh').trigger('updatelayout');
       }, new_db_error);
-    }, new_db_error);
+    });
   }
   
   //constructor
@@ -397,6 +398,8 @@ Array.prototype.remove= function(){
 
 function new_db_error(tx,err) {
   console.log('RealFortune: DB error');
+  console.log(tx);
+  console.log(err);
 }
 
 function switch_fortune( new_fortune ) {
@@ -410,7 +413,7 @@ function switch_fortune( new_fortune ) {
     //update tools if this is(n't) a favorite
     if ( new_fortune.fav ) {
     	$('.favorited').fadeIn('fast');
-      $('.unsaved').toggleClass('saved unsaved').find('.ui-btn-text').html('Remove from Favorites');
+      $('#favorite').addClass('saved').removeClass('unsaved').find('.ui-btn-text').html('Remove from Favorites');
     } else {
     	$('.favorited').fadeOut('fast');
       $('.saved').toggleClass('unsaved saved').find('.ui-btn-text').html('Add to Favorites');
