@@ -72,7 +72,6 @@
 		116F64BB14AF804000D5236A /* PhoneGap.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PhoneGap.plist; sourceTree = "<group>"; };
 		116F64BE14AF804000D5236A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
 		116F64BF14AF804000D5236A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Classes/AppDelegate.m; sourceTree = "<group>"; };
-		116F64C214AF804000D5236A /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
 		116F64C814AF814100D5236A /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		11EFAB9414AFB29C0047241A /* TwitterPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterPlugin.h; sourceTree = "<group>"; };
 		11EFAB9514AFB29C0047241A /* TwitterPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterPlugin.m; sourceTree = "<group>"; };
@@ -240,7 +239,6 @@
 			children = (
 				11EFAB9414AFB29C0047241A /* TwitterPlugin.h */,
 				11EFAB9514AFB29C0047241A /* TwitterPlugin.m */,
-				116F64C214AF804000D5236A /* README */,
 			);
 			name = Plugins;
 			sourceTree = "<group>";
