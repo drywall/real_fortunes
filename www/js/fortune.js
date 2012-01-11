@@ -8,6 +8,8 @@ function onBodyLoad() {
 //where the magic happens
 function onDeviceReady() {
   
+	the_fortune.init();
+
   toggleShaker();
   
   //make sure we can fetch images
@@ -15,10 +17,17 @@ function onDeviceReady() {
     $.mobile.allowCrossDomainPages = true;
     $.support.cors = true;
     $.mobile.touchOverflowEnabled = false;
-  });
+   });
   
   //behaviors for fortune page
   $("#fortunepage").live('pageinit', function(e) {
+
+    $(this).ajaxError(function(e,jqxhr,settings,exception) {
+    	console.log('ajax error!');
+    	//console.log(jqxhr);
+    	console.log(settings);
+    	console.log(exception);
+    });
 
     //power it
     the_fortune.publish_new(false);
@@ -175,17 +184,18 @@ var current_fortune_id = 0;
  */
 function fortuneObj() {
 
-  this.remote_server_url = "https://s3.amazonaws.com/real-fortune/";
+  this.remote_server_url = "https://s3.amazonaws.com/real-fortune/data/";
 
   //constructs database and all that good stuff
-  this.initialize = function() {
+  this.init = function() {
+		console.log('initializing!');   
     // get the max id
     $.get( this.remote_server_url + "max.json", function(data) {
     	max_fortune_id = data.max;
 	    //re-populate initial "needed" array, overwriting db_init call
 	    needed = [];
 	    for (i = initial_count; i <= max_fortune_id; i++) {
-	      if (!$.inArray(i, fortune_ids)) {
+	      if ($.inArray(i, fortune_ids) == -1) {
 	      	needed.push(i);
 	      }
 	    }
@@ -195,7 +205,7 @@ function fortuneObj() {
       needed.push(i);
     }
     //load up fortunes we have in the database, updating .needed and .fortune_ids
-    this.db_init();
+    this.db_init(); 
   } 
   
   //put fortune into DOM
@@ -211,24 +221,16 @@ function fortuneObj() {
       //figure out what id to fetch
       new_index = Math.floor(Math.random() * needed.length); 
       new_id = needed[ new_index ];
-      
       //get it
-      $.getImageData({
-        url: this.remote_server_url + lpad( new_id ) + '.jpg',
-        server: 'http://byrnecreative.com/fortune/getimagedata.php?callback=?',
-        success: function(image) {
-          src = $(image).attr('src');
-          //save it to DB
-          db_create_fortune( new_id, src );
+      $.get(this.remote_server_url + lpad( new_id ) + '.json',
+				function(image) {
+          db_create_fortune( new_id, image.data );
+          console.log('ajax success');
           //update arrays
           fortune_ids.push( new_id );
           needed.remove( new_id );
         },
-        error: function(xhr,text_status) {
-        	//need to take a closer look at this
-          console.log('RealFortune: ajax failure: '+text_status);
-        }
-      });
+        'json');
     }
   }
     
@@ -347,7 +349,7 @@ function fortuneObj() {
   }
   
   //constructor
-  this.initialize();
+  this.init();
 }
 
 //insert fortunes
