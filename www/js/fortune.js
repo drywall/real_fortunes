@@ -100,7 +100,7 @@ function onDeviceReady() {
   			function(f) { console.log('RealFortune: Tweet problem'); },
   			'Check out this fortune from my iOS app, @RealFortunes',
   			'',
-  			the_fortune.remote_server_url + lpad(current_fortune_id) + ".jpg"
+  			'https://s3.amazonaws.com/real-fortune/img/' + lpad(current_fortune_id) + ".jpg"
   		);    	
   	});
   });
