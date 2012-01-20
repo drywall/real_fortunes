@@ -34,7 +34,7 @@ function onDeviceReady() {
     
     $("#fortune-img").bind('tap swipe', function(e) {
       the_fortune.publish_new(false);
-      the_fortune.download_images( num_to_fetch );
+      if (needed.length >= 1) the_fortune.download_images( num_to_fetch ); //1 you'll never get, just in case
     });
     
     $('#fortune-img').bind('taphold', function() {
@@ -178,6 +178,8 @@ var needed = new Array();
 var num_to_fetch = 1;
 var the_fortune = new fortuneObj();
 var current_fortune_id = 0;
+var hidden_count = 0;
+var last_sql = "none";
 
 /**
  * Basic fortune object
@@ -188,7 +190,10 @@ function fortuneObj() {
 
   //constructs database and all that good stuff
   this.init = function() {
-		console.log('initializing!');   
+		fortune_ids = [];
+		needed = [];
+		console.log('initializing! fidl:' + fortune_ids.length + "needed:"+needed.length);   
+				
     // get the max id
     $.get( this.remote_server_url + "max.json", function(data) {
     	max_fortune_id = data.max;
@@ -221,14 +226,13 @@ function fortuneObj() {
       //figure out what id to fetch
       new_index = Math.floor(Math.random() * needed.length); 
       new_id = needed[ new_index ];
+      //update arrays
+      fortune_ids.push( new_id );
+      needed.remove( new_id );
       //get it
       $.get(this.remote_server_url + lpad( new_id ) + '.json',
 				function(image) {
           db_create_fortune( new_id, image.data );
-          console.log('ajax success');
-          //update arrays
-          fortune_ids.push( new_id );
-          needed.remove( new_id );
         },
         'json');
     }
@@ -244,15 +248,20 @@ function fortuneObj() {
       //query for a list of fortunes. If empty, populate it. If not, populate array
       tx.executeSql('SELECT * FROM fortunes', [], function(tx2, results){
         if (!results.rows.length) {
+        	console.log("none found");
           for (i = 1; i <= initial_count; i++) {
             tx.executeSql('INSERT INTO fortunes VALUES ('+i+', "img/' + lpad(i) + '.jpg", 0, 0)');
             fortune_ids.push(i);
           }
         } else {
+        	console.log("found "+results.rows.length);
+        	console.log("fid.l:"+fortune_ids.length);
           for (i = 0; i < results.rows.length; i++) {
             fortune_ids.push( results.rows.item(i).id );
             needed.remove( results.rows.item(i).id );
+            if (results.rows.item(i).hidden) hidden_count++;
           }
+          console.log("fid.l now:"+fortune_ids.length);
         }
       }, new_db_error); //end call for querying list
       
@@ -271,10 +280,11 @@ function fortuneObj() {
           }, 
           new_db_error);
       } else {
-        rand = Math.floor(Math.random() * fortune_ids.length);  //because ORDER BY random() is busted in webkit
-        tx.executeSql('SELECT * FROM fortunes WHERE hidden != 1 AND id != '+current_fortune_id+' LIMIT 1 OFFSET '+rand, [], 
+        rand_off = Math.floor(Math.random() * (fortune_ids.length - hidden_count - 1));  //because ORDER BY random() is busted in webkit
+        console.log("rand:"+rand_off);
+        last_sql = "select rand";
+        tx.executeSql('SELECT * FROM fortunes WHERE id != '+current_fortune_id+' LIMIT 1 OFFSET '+rand_off, [], 
           function(tx2,res) {
-            //don't test to see if it worked, just assume it did for now
             switch_fortune(res.rows.item(0));
           }, 
           new_db_error);
@@ -300,12 +310,14 @@ function fortuneObj() {
     dbase.transaction(function(tx) {
       tx.executeSql('UPDATE fortunes SET hidden = 1 WHERE id = '+id);
     }, new_db_error);
+    hidden_count++;
   }
   
   this.db_show = function( id ) {
     dbase.transaction(function(tx) {
       tx.executeSql('UPDATE fortunes SET hidden = 0 WHERE id = '+id);
     }, new_db_error);  
+    hidden_count--;
   }
   
   this.db_clear_entries = function( clear_type ) {
@@ -354,6 +366,7 @@ function fortuneObj() {
 
 //insert fortunes
 function db_create_fortune( id, src ) {
+	last_sql = "insert new:" + id;
   dbase.transaction(function(tx){
     tx.executeSql('INSERT INTO fortunes(id,src,fav,hidden) VALUES ('+ id +', "'+src+'", 0, 0)');
   }, new_db_error);
@@ -399,9 +412,10 @@ Array.prototype.remove= function(){
 }
 
 function new_db_error(tx,err) {
-  console.log('RealFortune: DB error');
-  console.log(tx);
-  console.log(err);
+  console.log('RealFortune: DB error '+last_sql);
+  console.log(fortune_ids);
+//  console.log(tx);
+//  console.log(err);
 }
 
 function switch_fortune( new_fortune ) {
